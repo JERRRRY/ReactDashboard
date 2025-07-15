@@ -51,9 +51,24 @@ When using **development tools `webpack-dev-server`**, the **server perform comp
 
 ## 🔧 Server-Side: What `webpack-dev-server` Does
 
-### 1. **Initialize Webpack with Configuration**
+### 1. **Run Webpack**
 
-* Reads `webpack.config.js`(Blueprint for Webpack, it tells Webpack how to build app)
+webpack is chef who prepare the food, wds is the kitchen
+
+Webpack reads the `webpack.config.js`(**tells Webpack how to build app**). 
+Then read index.js(which conclude all the files, eg. import './styles.css')
+bundle all the files into single file **bundle.js** and all style into **style.css** by **removing unused code** and **transforming all files by loader**.  
+
+Webpack uses loaders to transform non-JavaScript files (like .css, .png, .ts, etc.) into JavaScript modules — because the browser can only run JavaScript.
+
+---------------------|----------------------------------|-----------------------------------------------------
+.js (ES6/JSX/TS) | Browser-compatible JavaScript | Babel or TypeScript transpiles modern/typed code
+.css | JavaScript that injects CSS into <style> tags | So styles are loaded dynamically in JS
+.png / .jpg | JavaScript exporting a URL or base64 string | So the image can be imported like a module
+.svg | Inline SVG or a JS URL string | Same reason as above
+.json | Parsed JS object | So you can import data from './data.json'
+
+**webpack.config.js:**
 
 | Section        | What It Controls                             | Example                                       |
 | -------------- | -------------------------------------------- | --------------------------------------------- |
@@ -61,11 +76,24 @@ When using **development tools `webpack-dev-server`**, the **server perform comp
 | `output`       | Where to put the bundled file                | `'./dist/bundle.js'`                          |
 | `module.rules` | How to handle different file types           | Use Babel for `.js`, loaders for `.css`, etc. |
 | `plugins`      | Extra functionality                          | HMR, HTML template injection, etc.            |
-| `devServer`    | Dev server behavior (for webpack-dev-server) | Port, HMR, open browser, etc.                 |
+| `devServer`    | WDS behavior  | Port, HMR, open browser, etc.                 |
 | `mode`         | Optimize for development or production       | `'development'` or `'production'`             |
+ 
+**Webpack only ignore the 'devServer', WDS will read config when it need the settings.**
 
-* Sets up loaders (e.g., Babel, CSS, etc.)
-* Registers plugins (e.g., HMR plugin)
+Webpack Sets up loaders and registers plugins.(like the staff in kitchen)
+
+They can help Webpack finish its works.
+Plugin would modify the bundle every time webpack need them by listening to the emit.
+
+**HtmlWebpackPlugin**: Creates /dist/index.html(extra file), Injects <script src="bundle.js"> 
+**DefinePlugin**: Replaces strings defined in .env like process.env.API_KEY to real value
+**CopyWebpackPlugin**: copy file .png into /dist/assets/dog.png from /public/assets/dog.png
+**CompressionPlugin**: compress /dist/bundle.js to /dist/bundle.js.gz 
+**HotModuleReplacementPlugin**: 
+Wraps each module with HMR runtime code. 
+Add if (module.hot) {module.hot.accept();} under each module
+“Hey, I can be hot-replaced if this file changes.”
 
 ### 2. **Start a Local HTTP Server**
 
