@@ -45,17 +45,25 @@ save the request to log, open React file from memory
 
 
 
-Yes, when using **development tools like `webpack-dev-server`**, the **server does perform compile steps**, while the **client mainly loads the result** and handles reloading when things change.
-
-Here's a step-by-step breakdown of what the **server** and **client** do during **development** with something like `webpack-dev-server` + HMR (Hot Module Replacement):
+When using **development tools `webpack-dev-server`**, the **server perform compile steps**, while the **client mainly loads the result and handles reloading when things change**.
 
 ---
 
-## 🔧 Server-Side: What the Dev Server (e.g., `webpack-dev-server`) Does
+## 🔧 Server-Side: What `webpack-dev-server` Does
 
 ### 1. **Initialize Webpack with Configuration**
 
-* Reads `webpack.config.js`
+* Reads `webpack.config.js`(Blueprint for Webpack, it tells Webpack how to build app)
+
+| Section        | What It Controls                             | Example                                       |
+| -------------- | -------------------------------------------- | --------------------------------------------- |
+| `entry`        | Where your app starts                        | `'./src/index.js'`                            |
+| `output`       | Where to put the bundled file                | `'./dist/bundle.js'`                          |
+| `module.rules` | How to handle different file types           | Use Babel for `.js`, loaders for `.css`, etc. |
+| `plugins`      | Extra functionality                          | HMR, HTML template injection, etc.            |
+| `devServer`    | Dev server behavior (for webpack-dev-server) | Port, HMR, open browser, etc.                 |
+| `mode`         | Optimize for development or production       | `'development'` or `'production'`             |
+
 * Sets up loaders (e.g., Babel, CSS, etc.)
 * Registers plugins (e.g., HMR plugin)
 
