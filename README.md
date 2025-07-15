@@ -61,12 +61,14 @@ bundle all the files into single file **bundle.js** and all style into **style.c
 
 Webpack uses loaders to transform non-JavaScript files (like .css, .png, .ts, etc.) into JavaScript modules — because the browser can only run JavaScript.
 
----------------------|----------------------------------|-----------------------------------------------------
-.js (ES6/JSX/TS) | Browser-compatible JavaScript | Babel or TypeScript transpiles modern/typed code
-.css | JavaScript that injects CSS into <style> tags | So styles are loaded dynamically in JS
-.png / .jpg | JavaScript exporting a URL or base64 string | So the image can be imported like a module
-.svg | Inline SVG or a JS URL string | Same reason as above
-.json | Parsed JS object | So you can import data from './data.json'
+| File Type     | Transformed Into                              | Why                                                  |
+|---------------|-----------------------------------------------|-------------------------------------------------------|
+| `.js`  | Browser-compatible JavaScript               | Babel or TypeScript transpiles typed code     |
+| `.css`        | JavaScript that injects CSS into `<style>` tags | So styles are loaded dynamically in JS               |
+| `.png` / `.jpg` | JavaScript exporting a URL or base64 string    | So the image can be imported like a module           |
+| `.svg`        | Inline SVG or a JS URL string                  | Same reason as above                                 |
+| `.json`       | Parsed JS object                               | So you can `import data from './data.json'`          |
+
 
 **webpack.config.js:**
 
@@ -80,17 +82,15 @@ Webpack uses loaders to transform non-JavaScript files (like .css, .png, .ts, et
 | `mode`         | Optimize for development or production       | `'development'` or `'production'`             |
  
 **Webpack only ignore the 'devServer', WDS will read config when it need the settings.**
-
-Webpack Sets up loaders and registers plugins.(like the staff in kitchen)
-
+**Webpack Sets up loaders and registers plugins.(like the staff in kitchen)**
 They can help Webpack finish its works.
 Plugin would modify the bundle every time webpack need them by listening to the emit.
 
-**HtmlWebpackPlugin**: Creates /dist/index.html(extra file), Injects <script src="bundle.js"> 
-**DefinePlugin**: Replaces strings defined in .env like process.env.API_KEY to real value
-**CopyWebpackPlugin**: copy file .png into /dist/assets/dog.png from /public/assets/dog.png
-**CompressionPlugin**: compress /dist/bundle.js to /dist/bundle.js.gz 
-**HotModuleReplacementPlugin**: 
+- **HtmlWebpackPlugin**: Creates /dist/index.html(open-1st file), Injects `<script src="bundle.js">`
+- **DefinePlugin**: Replaces strings defined in .env like process.env.API_KEY to real value
+- **CopyWebpackPlugin**: copy file .png into /dist/assets/dog.png from /public/assets/dog.png
+- **CompressionPlugin**: compress /dist/bundle.js to /dist/bundle.js.gz 
+- **HotModuleReplacementPlugin**: 
 Wraps each module with HMR runtime code. 
 Add if (module.hot) {module.hot.accept();} under each module
 “Hey, I can be hot-replaced if this file changes.”
